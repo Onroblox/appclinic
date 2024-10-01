@@ -1,0 +1,97 @@
+{% extends 'program/layout.html' %}
+
+{% block title %}
+    Sorted Doctors
+{% endblock %}
+
+{% block body %}
+    {% if sorted_doctors.count > 0 %}
+    <ul class="ul">
+        {% for i in sorted_doctors.results %}
+        <div class="card" style="width: 18rem; margin-bottom: 5px;">
+            <div class="card-body">
+            <h5 style="font-weight: bold;" class="card-title">Doctor Id: {{i.id}}</h5>
+            <li style="list-style: none;" class = 'li'>
+                <p>
+                    Name: {{i.name}}
+                </p> 
+                <p>
+                    Description: {{i.description}}
+                </p> 
+                <p>
+                    Directions - title: {{i.directions.0.title}}
+                </p>
+                <p>
+                    Birth: {{i.birth_date}}
+                </p> 
+                <p>
+                    Slug: {{i.slug}}
+                </p>
+                <p>
+                    Experience: {{i.experience}}
+                </p>
+                <p>
+                    Sort By: {{i.sort_order}}
+                </p>
+            </li>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+    <form action="method" class = 'pages'>
+        <ul>
+            <li><a id="next-link">Next-></a></li>
+            <li><a id="prev-link"><-Previous</a></li>
+        </ul>
+    </form>
+    <form class="filter">
+        <ul>
+            <li>
+                <label for="Filter">Filter:</label>
+            </li>
+            <li>
+                <input type="text" name="filexp" placeholder="Experience In Years: " value="">
+                <button name="filexpbutton">Reset</button>
+            </li>
+            <li>
+                <div class="direction_sort">
+                    <input type="text" id="sortInput" placeholder="Ім'я напрямку: " value="">
+                    <button type="button" onclick="sortByDirection()">Сортувати</button>
+                    <script>
+                        function sortByDirection() {
+                            const inputValue = document.getElementById('sortInput').value;
+                            if (inputValue) {
+                                window.location.href = `/doctors/sort/${encodeURIComponent(inputValue)}/`;
+                            } else {
+                                alert("Будь ласка, введіть ім'я напрямку для сортування.");
+                            }
+                        }
+                </script>
+            </li>
+        </ul>
+    </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Знайдемо елементи пагінації
+            let prevLink = document.getElementById('prev-link');
+            let nextLink = document.getElementById('next-link');
+
+            // Отримуємо параметр 'page' з URL
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentPage = parseInt(urlParams.get('page')) || 1;
+
+            // Визначаємо значення для попередньої та наступної сторінки
+            let prevPage = currentPage > 1 ? currentPage - 1 : 1;
+            let nextPage = currentPage + 1;
+
+            // Створюємо URL для попередньої та наступної сторінки
+            prevLink.href = `?page=${prevPage}`;
+            nextLink.href = `?page=${nextPage}`;
+        });
+    </script>
+    {% else %}
+    <script>
+        window.history.back();
+    </script>
+    {% endif %}
+{% endblock %}

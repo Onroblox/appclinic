@@ -1,0 +1,73 @@
+{% extends 'program/layout.html' %}
+
+{% block title %}
+    Doctors
+{% endblock %}
+
+{% block body %}
+    <ul class="ul">
+        {% for i in doctors.results %}
+        <div class="card" style="width: 18rem; margin-bottom: 5px;">
+            <div class="card-body">
+            <h5 style="font-weight: bold;" class="card-title">Doctor Id: {{i.id}}</h5>
+            <li style="list-style: none;" class = 'li'>
+                <p>
+                    Name: {{i.name}}
+                </p> 
+                <p>
+                    Description: {{i.description}}
+                </p> 
+                <p>
+                    Directions - title: {{i.directions.0.title}}
+                </p>
+                <p>
+                    Birth: {{i.birth_date}}
+                </p> 
+                <p>
+                    Slug: {{i.slug}}
+                </p>
+                <p>
+                    Experience: {{i.experience}}
+                </p>
+                <p>
+                    Sort By: {{i.sort_order}}
+                </p>
+            </li>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+    <form action="method" class = 'pages'>
+        <ul>
+            <li><a href="{% if doctors.next != null%}?page={{doctors.next}}{% endif %}">Next-></a></li>
+            <li><a href="{% if doctors.previous != null%}?page={{doctors.previous}}{% endif %}"><-Previous</a></li>
+        </ul>
+    </form>
+    <form class="filter">
+        <ul>
+            <li>
+                <label for="Filter">Filter:</label>
+            </li>
+            <li>
+                <input type="text" name="filexp" placeholder="Experience In Years: " value="">
+                <button name="filexpbutton">Reset</button>
+            </li>
+            <li>
+                <div class="direction_sort">
+                    <input type="text" id="sortInput" placeholder="Ім'я напрямку: ">
+                    <button type="button" onclick="sortByDirection()">Сортувати</button>
+                    <script>
+                        function sortByDirection() {
+                            const inputValue = document.getElementById('sortInput').value;
+                            if (inputValue) {
+                                window.location.href = `/doctors/sort/${encodeURIComponent(inputValue)}/`;
+                            } else {
+                                alert("Будь ласка, введіть ім'я напрямку для сортування.");
+                            }
+                        }
+                    </script>
+                </div>
+            </li>
+        </ul>
+    </form>
+{% endblock %}

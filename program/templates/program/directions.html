@@ -1,0 +1,28 @@
+{% extends 'program/layout.html' %}
+
+{% block title %}
+    Directions
+{% endblock %}
+
+{% block body %}
+    <ul class = "ul">
+        {% for i in directions%}
+        <div class="card" style="width: 18rem; margin-bottom: 5px;">
+            <div class="card-body">
+                <h5 style="font-weight: bold;" class="card-title">Direction Id: {{i.id}}</h5>
+                <li style="list-style: none;" class="li">
+                    <p>
+                        Title: {{ i.title }}
+                    </p>
+                    <p>
+                        Slug: {{ i.slug }}
+                    </p>
+                    <p>
+                        Sort By: {{ i.sort_order }}
+                    </p>
+                </li>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+{% endblock %}
